@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { EmployeeModule } from './employee/employee.module';
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       // synchronize is help tu start the entity on superbase (PostgreSQL)
       synchronize: true
     }),
-    UserModule],
+    UserModule,
+    EmployeeModule],
   controllers: [AppController],
   providers: [AppService],
 })
