@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Put } from '@nestjs/common';
 import { EmployeeService } from './employee.service';
 import { Employee } from './employee.entity';
 
@@ -16,8 +16,24 @@ export class EmployeeController {
     async getAlldetailemp(): Promise<Employee[]> {
         return this.employeeService.getallemployeeDetail();
     }
+
     @Get(':id')
-    async getAlldetailempbyId(@Param('id') id: number): Promise<Employee> {
+    async getAlldetailempbyId(@Param('id', ParseIntPipe) id: number): Promise<Employee> {
         return this.employeeService.getDatabyId(id);
+    }
+
+    @Put(':id')
+    async updateEmployee(@Param('id', ParseIntPipe) id: number, @Body() employeeData: Partial<Employee>): Promise<Employee> {
+        return this.employeeService.updateEmployee(id, employeeData);
+    }
+
+    @Patch(':id')
+    async patchEmployeedetial(@Param('id') id: number, @Body() employeeData: Partial<Employee>){
+        return this.employeeService.patchEmployee(id, employeeData);
+    }
+
+    @Delete(':id')
+    async deleteEmployee(@Param('id') id: number){
+        return this.employeeService.deleteEmployee(id);
     }
 }
