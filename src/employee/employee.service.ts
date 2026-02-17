@@ -64,12 +64,29 @@ export class EmployeeService {
 
         return await this.employeeRepository.save(employeedetial);
     }
-// this function is help to delete the entity....
-    async deleteEmployee(id: number): Promise<string>{
+    // this function is help to delete the entity....
+    async deleteEmployee(id: number): Promise<string> {
         const deleteEmployee = await this.employeeRepository.delete(id);
-        if(!deleteEmployee){
+        if (!deleteEmployee) {
             return 'Student not found';
         }
         return 'your data is deleted sucessfully'
     }
+    // this function help to serach the data..
+    // searching feactue by using the dep OR name
+    async searchEmployee(filters: { name?: string; department?: string }): Promise<Employee[]> {
+        const query = this.employeeRepository.createQueryBuilder('employee');
+        if (filters.name) {
+            // andWhere is help to find any emp name...
+            // ILIKE is help case sensetive feacture user name small letter insect karya ye tu phir captial letter me add karya dono case me data fetch karya daya ga..
+            //% % ---> me na serach bar me na ALI likha ta ho tu DB me jese kiya naam kiya name kiya start me ye tu end me ALI aarha ho ga tu wo fetch ho kar aajaya ga like "{"Ali khan", "Shaharyar ALi", "Hassan ALi"}" ye sub data aajaya ga 
+            // or ager hum % use nhi karta ha tu only Ali ko liya kar aaya ga...
+            query.andWhere('employee.name ILIKE :name', { name: `%${filters.name}%` });
+        }
+        if(filters.department){
+            query.andWhere('employee.department = :dept',{dept: filters.department});
+        }
+        return query.getMany();
+    }
+
 }
