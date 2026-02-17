@@ -1,6 +1,7 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { EmployeeService } from './employee.service';
 import { Employee } from './employee.entity';
+import { SupabaseAuthGuard } from 'src/auth/supabase-auth/supabase-auth.guard';
 
 @Controller('employee')
 export class EmployeeController {
@@ -12,6 +13,10 @@ export class EmployeeController {
         return this.employeeService.createEmployeedetial(empdata);
     }
 
+    // the useGuards is to genrated the token
+    //https://uymqsyeeafjpeiqfaycj.supabase.co/auth/v1/token?grant_type=password
+    // https://[Project ID "Project Setting --> Project ID "].supabase.co/auth/v1/token?grant_type=password
+    @UseGuards(SupabaseAuthGuard)
     @Get()
     async getAlldetailemp(): Promise<Employee[]> {
         return this.employeeService.getallemployeeDetail();

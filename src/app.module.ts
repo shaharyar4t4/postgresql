@@ -9,7 +9,9 @@ import { EmployeeModule } from './employee/employee.module';
 @Module({
   imports: [
     // this is the process of instially the database(PostgreSql)
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: process.env.DATABASE_URL,
